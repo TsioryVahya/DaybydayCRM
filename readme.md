@@ -1,69 +1,92 @@
+DaybydayCRM — Documentation du Projet
 
-<a href="https://daybydaycrm.com/">
-    <img src="https://user-images.githubusercontent.com/15610490/69175894-ed771300-0b04-11ea-9ecd-a5ad6e3d8877.png"  height="100" />
-</a>
+Vue d’ensemble
+- DaybydayCRM est une application CRM libre et auto‑hébergée basée sur Laravel 7.
+- Back-end: PHP 7.3/7.4, Laravel 7, MySQL/MariaDB, Redis (optionnel), Elasticsearch (optionnel).
+- Front-end: Laravel Mix (Webpack), SCSS, JS.
 
-======================
+Prérequis
+- Docker Desktop (recommandé) OU PHP 7.4, Composer, Node.js et MySQL installés localement.
+- Fichier d’environnement: voir [.env.example](file:///w:/ITU/S6/PREPA/DaybydayCRM/.env.example).
 
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/bottelet/DaybydayCRM/Run%20tests?style=for-the-badge)
-![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/bottelet/DaybydayCRM?label=Latest%20version&style=for-the-badge)
-![](https://img.shields.io/david/bottelet/DaybydayCRM?style=for-the-badge)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=for-the-badge&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIGlkPSJzdmcyIiB3aWR0aD0iNjQ1IiBoZWlnaHQ9IjU4NSIgdmVyc2lvbj0iMS4wIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPiA8ZyBpZD0ibGF5ZXIxIj4gIDxwYXRoIGlkPSJwYXRoMjQxNyIgZD0ibTI5Ny4zIDU1MC44N2MtMTMuNzc1LTE1LjQzNi00OC4xNzEtNDUuNTMtNzYuNDM1LTY2Ljg3NC04My43NDQtNjMuMjQyLTk1LjE0Mi03Mi4zOTQtMTI5LjE0LTEwMy43LTYyLjY4NS01Ny43Mi04OS4zMDYtMTE1LjcxLTg5LjIxNC0xOTQuMzQgMC4wNDQ1MTItMzguMzg0IDIuNjYwOC01My4xNzIgMTMuNDEtNzUuNzk3IDE4LjIzNy0zOC4zODYgNDUuMS02Ni45MDkgNzkuNDQ1LTg0LjM1NSAyNC4zMjUtMTIuMzU2IDM2LjMyMy0xNy44NDUgNzYuOTQ0LTE4LjA3IDQyLjQ5My0wLjIzNDgzIDUxLjQzOSA0LjcxOTcgNzYuNDM1IDE4LjQ1MiAzMC40MjUgMTYuNzE0IDYxLjc0IDUyLjQzNiA2OC4yMTMgNzcuODExbDMuOTk4MSAxNS42NzIgOS44NTk2LTIxLjU4NWM1NS43MTYtMTIxLjk3IDIzMy42LTEyMC4xNSAyOTUuNSAzLjAzMTYgMTkuNjM4IDM5LjA3NiAyMS43OTQgMTIyLjUxIDQuMzgwMSAxNjkuNTEtMjIuNzE1IDYxLjMwOS02NS4zOCAxMDguMDUtMTY0LjAxIDE3OS42OC02NC42ODEgNDYuOTc0LTEzNy44OCAxMTguMDUtMTQyLjk4IDEyOC4wMy01LjkxNTUgMTEuNTg4LTAuMjgyMTYgMS44MTU5LTI2LjQwOC0yNy40NjF6IiBmaWxsPSIjZGQ1MDRmIi8%2BIDwvZz48L3N2Zz4%3D)](http://makeapullrequest.com)
-![Twitter URL](https://img.shields.io/twitter/url?color=%2300acee&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Fbottelet%2Fdaybydaycrm)
+Démarrage Rapide (Docker recommandé)
+1) Démarrer les services:
+- docker-compose up -d
+- Fichier de stack: [docker-compose.yml](file:///w:/ITU/S6/PREPA/DaybydayCRM/docker-compose.yml)
+2) Installer les dépendances PHP:
+- docker-compose exec php composer install
+3) Générer la clé et préparer la base:
+- docker-compose exec php php artisan key:generate
+- docker-compose exec php php artisan migrate --seed
+4) Accéder à l’application:
+- http://localhost
 
-[DaybydayCRM](https://daybydaycrm.com) is an everyday customer relationship management system (CRM) to help you keep track of your customers, tasks, appointments, etc. The CRM is offered as an open-source, self-hosted platform and as a [hosted CRM system](https://daybydaycrm.com) on daybydaycrm.com.
+Installation Locale (sans Docker)
+1) Créer le fichier .env et configurer la base:
+- Copier .env.example en .env et renseigner DB_* (hôte, base, utilisateur, mot de passe).
+- Fichier: [.env.example](file:///w:/ITU/S6/PREPA/DaybydayCRM/.env.example)
+2) PHP et Composer:
+- Utiliser PHP 7.4. Installer les extensions: fileinfo, zip, openssl, mbstring, pdo_mysql, curl.
+- S’assurer que extension_dir pointe vers W:\php-7.4.33-Win32-vc15-x64\ext dans php.ini.
+- composer install
+- php artisan key:generate
+3) Base de données:
+- php artisan migrate --seed
+4) Front-end:
+- npm install
+- npm run dev
+- Si Node ≥ 17: définir la variable NODE_OPTIONS=--openssl-legacy-provider avant npm run dev.
+5) Lancer le serveur local:
+- php artisan serve (http://localhost:8000)
 
-<img src="https://user-images.githubusercontent.com/15610490/84194453-54f2b100-aa9d-11ea-8fa8-12bde56b9deb.png" align="left"/>
+Comptes de Démonstration (seed)
+- Un utilisateur administrateur est généré par les seeders:
+- Email: admin@admin.com (voir [UsersTableSeeder.php](file:///w:/ITU/S6/PREPA/DaybydayCRM/database/seeds/UsersTableSeeder.php)).
+- Le mot de passe est défini par les seeders/fixtures du projet. Si besoin, le réinitialiser via php artisan tinker ou la page “Forgot password”.
 
-# Demo
+Réinitialisation des Données
+- Une commande de réinitialisation a été ajoutée pour vider caches et recréer le schéma:
+- php artisan app:reset-data
+- Options:
+- --no-seed pour ne pas exécuter les seeders
+- --force pour exécuter en production (à éviter)
+- Implémentation: [ResetData.php](file:///w:/ITU/S6/PREPA/DaybydayCRM/app/Console/Commands/ResetData.php), enregistrée dans [Kernel.php](file:///w:/ITU/S6/PREPA/DaybydayCRM/app/Console/Kernel.php#L15-L18).
 
-Try a demo version of DaybydayCRM at:
+Export/Visualisation du MCD
+- SQL (structure uniquement): [BDD/mcd_simple.sql](file:///w:/ITU/S6/PREPA/DaybydayCRM/BDD/mcd_simple.sql)
+- phpMyAdmin (Designer): Base → Designer → Exporter le schéma (PDF/PNG/SVG).
+- MySQL Workbench: Database → Reverse Engineer → EER Diagram.
+- DBeaver: clic droit sur le schéma → ER Diagram → Export.
 
-[demo.daybydaycrm.com](https://demo.daybydaycrm.com/?utm_source=github&utm_medium=daybydaycrmPage&utm_campaign=readme)
+Architecture du Code (Laravel)
+- Application: [app/](file:///w:/ITU/S6/PREPA/DaybydayCRM/app)
+- Contrôleurs HTTP: [app/Http/Controllers](file:///w:/ITU/S6/PREPA/DaybydayCRM/app/Http/Controllers)
+- Modèles: [app/Models](file:///w:/ITU/S6/PREPA/DaybydayCRM/app/Models)
+- Requêtes/Validations: [app/Http/Requests](file:///w:/ITU/S6/PREPA/DaybydayCRM/app/Http/Requests)
+- Services/Répertoires métiers: [app/Services](file:///w:/ITU/S6/PREPA/DaybydayCRM/app/Services)
+- Observers/Listeners/Events: [app/Observers](file:///w:/ITU/S6/PREPA/DaybydayCRM/app/Observers), [app/Events](file:///w:/ITU/S6/PREPA/DaybydayCRM/app/Events), [app/Listeners](file:///w:/ITU/S6/PREPA/DaybydayCRM/app/Listeners)
+- Migrations/Seeders: [database/migrations](file:///w:/ITU/S6/PREPA/DaybydayCRM/database/migrations), [database/seeds](file:///w:/ITU/S6/PREPA/DaybydayCRM/database/seeds)
+- Config: [config/](file:///w:/ITU/S6/PREPA/DaybydayCRM/config)
 
-# Support the project
-If you benefit from and/or like using DaybydayCRM, please consider help drive the future development of the project by:
-* Star the project. ⭐
-* Create a pull request. 🚧
-* [Donating/Sponsoring today](https://github.com/sponsors/Bottelet). 💛
-* Consider using the hosted version of [DaybydayCRM](https://daybydaycrm.com). ✔️
+Commandes Utiles
+- Composer: composer install, composer dump-autoload, composer update
+- Artisan:
+- php artisan migrate, migrate:fresh, db:seed
+- php artisan route:list, config:cache, cache:clear
+- php artisan app:reset-data (voir plus haut)
+- Node/Front:
+- npm run dev, npm run prod
 
-And i will keep creating new features, releases, keep support running, and fix issues.
+Intégrations et Services Optionnels
+- Redis: cache/session (configurable via REDIS_*).
+- Elasticsearch: désactivable via ELASTICSEARCH_ENABLED (voir [config/elasticsearch.php](file:///w:/ITU/S6/PREPA/DaybydayCRM/config/elasticsearch.php)).
+- Facturation/Stripe: packages Cashier et stripe-php (extensions PHP curl requise).
 
-### Features
-- Tasks & leads management
-- Invoice management
-- Time registration
-- Register user absence and vacation 
-- Client & users appointments
-- Role -> permissions management
-- Global search
-- Client overview
-- Upload documents, and keep track of client documents
-- And many more, for more detailed features overview go to daybydaycrm.com/pricing
+Dépannage Rapide
+- Erreurs Composer liées à PHP 8.x: utiliser PHP 7.4 pour ce projet.
+- Extensions manquantes (fileinfo, zip, curl): activer dans php.ini et vérifier extension_dir.
+- Erreur Webpack “digital envelope routines”: définir NODE_OPTIONS=--openssl-legacy-provider pour Node ≥ 17.
 
-### Get started
+Licence
+- MIT. Voir composer.json ([composer.json](file:///w:/ITU/S6/PREPA/DaybydayCRM/composer.json)).
 
-For help on getting started, take a look at the wiki.
-
-* [Installation](https://github.com/Bottelet/DaybydayCRM/wiki/Install)
-* [Installation with Docker](https://github.com/Bottelet/DaybydayCRM/wiki/Install-using-Docker)
-* [Insertion of dummy data](https://github.com/Bottelet/DaybydayCRM/wiki/Insertion-of-dummy-data)
-
-### Feedback
-Feel free to send us feedback on [Twitter](https://twitter.com/Cbottelet) or [file an issue](https://github.com/bottelet/DaybydayCRM/issues/new). Feature requests are always welcome. If you wish to contribute, please take a quick look at the guidelines!
-
-### Contribution Guide
-DaybydayCRM follows [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md) coding standard.
-
-All tests should pass on Github actions, or the failed test should be rewritten to fit new changes. 
-
-### Localization
-You can help to translate DaybydayCRM into other languages by copying the resources/lang/en folder into, for example, resources/lang/de and translate the file found inside the folder.
-
-
-### Licenses
-DaybydayCRM from version 2.0.0 and up is open-sourced software licensed under the [GNU GPLv3](https://opensource.org/licenses/GPL-3.0)...
-[FAQ GPL](https://www.gnu.org/licenses/gpl-faq.html#DoesFreeSoftwareMeanUsingTheGPL)
-
-DaybydayCRM under and not included version 2.0.0 is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT)

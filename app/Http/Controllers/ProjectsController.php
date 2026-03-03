@@ -197,10 +197,11 @@ class ProjectsController extends Controller
             $collaborators->push($task->user);
         }
 
+        // $project->tasks->dd();
 
         return view('projects.show')
             ->withProject($project)
-            ->withStatuses(Status::typeOfProject()->get())
+            ->withStatuses(Status::typeOfTask()->get())
             ->withTasks($project->tasks)
             ->withCompletionPercentage($completionPercentage)
             ->withCollaborators($collaborators->unique())

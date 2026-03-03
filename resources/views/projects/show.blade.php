@@ -20,6 +20,8 @@
                     <header>{{ __($status->title)}}</header>
                     <ul class="sortable" id="{{$status->title}}" data-status-external-id="{{$status->external_id}}" style="min-height: 32em;">
                         @foreach($tasks as $task)
+                        <!-- {{$task->status_id}}
+                        {{$status->id}} -->
                         <li data-task-id="{{$task->external_id}}">
                             @if($task->status_id == $status->id)
                                 <div class="project-board-card-wrapper">
