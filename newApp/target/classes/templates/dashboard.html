@@ -8,8 +8,10 @@
                 <div class="card stat-card bg-primary text-white">
                     <div class="card-body">
                         <div>
-                            <h6 class="card-subtitle mb-2">Total Clients</h6>
-                            <h2 class="card-title mb-0" th:text="${stats.totalClients}">0</h2>
+                            <a href="/clients" class="text-white text-decoration-none">
+                                <h6 class="card-subtitle mb-2">Total Clients</h6>
+                                <h2 class="card-title mb-0" th:text="${stats.totalClients}">0</h2>
+                            </a>
                         </div>
                         <span class="material-icons stat-icon">people</span>
                     </div>
