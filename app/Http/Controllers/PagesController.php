@@ -58,4 +58,46 @@ class PagesController extends Controller
             ->withSettings(Setting::first())
             ->withAbsencesToday($absences);
     }
+
+    public function datasheet()
+    {
+        $today = today();
+        $startDate = today()->subdays(14);
+        $period = CarbonPeriod::create($startDate, $today);
+        $datasheet = [];
+
+        // Iterate over the period
+        foreach ($period as $date) {
+            $datasheet[$date->format(carbonDate())] = [];
+            $datasheet[$date->format(carbonDate())]["monthly"] = [];
+            $datasheet[$date->format(carbonDate())]["monthly"]["tasks"] = 0;
+            $datasheet[$date->format(carbonDate())]["monthly"]["leads"] = 0;
+        }
+
+        $tasks = Task::whereBetween('created_at', [$startDate, now()])->get();
+        $leads = Lead::whereBetween('created_at', [$startDate, now()])->get();
+        foreach ($tasks as $task) {
+            $datasheet[$task->created_at->format(carbonDate())]["monthly"]["tasks"]++;
+        }
+
+        foreach ($leads as $lead) {
+            $datasheet[$lead->created_at->format(carbonDate())]["monthly"]["leads"]++;
+        }
+        if (!auth()->user()->can('absence-view')) {
+            $absences = [];
+        } else {
+            $absences = Absence::with('user')->groupBy('user_id')->where('start_at', '>=', today())->orWhere('end_at', '>', today())->get();
+        }
+
+        return response()->json([
+            'users' => User::with(['department'])->get(),
+            'datasheet' => $datasheet,
+            'total_tasks' => Task::count(),
+            'total_leads' => Lead::count(),
+            'total_projects' => Project::count(),
+            'total_clients' => Client::count(),
+            'settings' => Setting::first(),
+            'absences_today' => $absences,
+        ]);
+    }
 }
