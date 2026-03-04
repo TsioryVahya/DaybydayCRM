@@ -40,10 +40,10 @@ class DashboardController extends Controller
         $data = [];
         switch ($type) {
             case 'clients':
-                $data = Client::latest()->take(10)->get(['company_name as title', 'company_type as subtitle', 'created_at']);
+                $data = Client::latest()->take(10)->get(['company_name as title','company_type as subtitle', 'created_at','external_id as external_id']);
                 break;
             case 'projects':
-                $data = Project::latest()->take(10)->get(['title', 'deadline as subtitle', 'created_at']);
+                $data = Project::latest()->take(10)->get(['title', 'deadline as subtitle', 'created_at','external_id as external_id']);
                 break;
             case 'tasks':
                 $data = Task::latest()->take(10)->get(['title', 'deadline as subtitle', 'created_at']);

@@ -105,18 +105,40 @@
                     <table class="table table-hover table-sm">
                         <thead class="table-light">
                         <tr>
-                            <th>Nom de l'entreprise</th>
-                            <th>Email</th>
-                            <th>Date de création</th>
+                            <th>id</th>
+                            <th>external_id</th>
+                            <th>address</th>
+                            <th>zipcode</th>
+                            <th>city</th>
+                            <th>company_name</th>
+                            <th>vat</th>
+                            <th>company_type</th>
+                            <th>client_number</th>
+                            <th>user_id</th>
+                            <th>industry_id</th>
+                            <th>deleted_at</th>
+                            <th>created_at</th>
+                            <th>updated_at</th>
                             <th style="width: 200px;">Actions</th>
                         </tr>
                         </thead>
                         <tbody>
                         <c:forEach items="${clients}" var="client">
                             <tr>
-                                <td><strong>${client['title']}</strong></td>
-                                <td>${client['subtitle']}</td>
+                                <td><small>${client['id']}</small></td>
+                                <td><small>${client['external_id']}</small></td>
+                                <td><small>${client['address']}</small></td>
+                                <td><small>${client['zipcode']}</small></td>
+                                <td><small>${client['city']}</small></td>
+                                <td><strong>${client['company_name']}</strong></td>
+                                <td><small>${client['vat']}</small></td>
+                                <td><small>${client['company_type']}</small></td>
+                                <td><small>${client['client_number']}</small></td>
+                                <td><small>${client['user_id']}</small></td>
+                                <td><small>${client['industry_id']}</small></td>
+                                <td><small>${client['deleted_at']}</small></td>
                                 <td><small>${client['created_at']}</small></td>
+                                <td><small>${client['updated_at']}</small></td>
                                 <td>
                                     <div class="btn-group btn-group-sm" role="group">
                                         <a class="btn btn-info" href="/clients/${client['external_id']}">

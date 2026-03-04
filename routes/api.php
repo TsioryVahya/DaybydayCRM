@@ -21,5 +21,11 @@ Route::group(['namespace' => 'App\Api\v1\Controllers'], function () {
     });
     Route::get('dashboard/stats', 'DashboardController@stats');
     Route::get('dashboard/details/{type}', 'DashboardController@details');
+
+    Route::get('clients', 'ClientController@index');
+    Route::post('clients', 'ClientController@store');
+    Route::get('clients/{external_id}', 'ClientController@show');
+    Route::patch('clients/{external_id}', 'ClientController@update');
+    Route::delete('clients/{external_id}', 'ClientController@destroy');
 });
 
