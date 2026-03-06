@@ -1,6 +1,5 @@
 package com.crm.newapp.controller;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -8,8 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,14 +19,9 @@ import java.util.Map;
 @CrossOrigin(origins = "*")
 public class DashboardController {
 
-    @Value("${daybydaycrm.api.base-url}")
-    private String apiBaseUrl;
-
-    private final RestTemplate restTemplate = new RestTemplate();
-
     @GetMapping("/dashboard")
     public String dashboardView(Model model) {
-        
+        // Populate model attributes expected by the Thymeleaf view
         Map<String, Object> response = getStats();
         @SuppressWarnings("unchecked")
         Map<String, Object> totals = (Map<String, Object>) response.get("totals");
@@ -49,58 +44,62 @@ public class DashboardController {
     @GetMapping("/api/stats")
     @ResponseBody
     public Map<String, Object> getStats() {
-        String url = joinUrl(apiBaseUrl, "/api/dashboard/stats");
-        try {
-            @SuppressWarnings("unchecked")
-            Map<String, Object> response = restTemplate.getForObject(url, Map.class);
-            return response != null ? response : emptyStatsResponse();
-        } catch (Exception ex) {
-            return emptyStatsResponse();
-        }
+        Map<String, Object> response = new HashMap<>();
+        
+        // Mock totals
+        Map<String, Object> totals = new HashMap<>();
+        totals.put("clients", 124);
+        totals.put("projects", 45);
+        totals.put("tasks", 87);
+        totals.put("offers", 12);
+        totals.put("invoices", 15);
+        totals.put("payments", 5);
+        totals.put("payment_amount", 12450.00);
+        response.put("totals", totals);
+
+        // Mock graphs
+        Map<String, Object> graphs = new HashMap<>();
+        
+        // Monthly Invoices
+        List<Map<String, Object>> monthlyInvoices = new ArrayList<>();
+        monthlyInvoices.add(createMap("month", "January", "count", 5));
+        monthlyInvoices.add(createMap("month", "February", "count", 8));
+        monthlyInvoices.add(createMap("month", "March", "count", 12));
+        graphs.put("monthly_invoices", monthlyInvoices);
+
+        // Task Status
+        List<Map<String, Object>> taskStatus = new ArrayList<>();
+        taskStatus.add(createMap("label", "Open", "value", 20));
+        taskStatus.add(createMap("label", "In Progress", "value", 35));
+        taskStatus.add(createMap("label", "Completed", "value", 45));
+        graphs.put("task_status", taskStatus);
+
+        // Payment Sources
+        List<Map<String, Object>> paymentSources = new ArrayList<>();
+        paymentSources.add(createMap("label", "PayPal", "value", 10));
+        paymentSources.add(createMap("label", "Bank Transfer", "value", 25));
+        paymentSources.add(createMap("label", "Stripe", "value", 15));
+        graphs.put("payment_sources", paymentSources);
+
+        response.put("graphs", graphs);
+        return response;
     }
 
     @GetMapping("/api/details/{type}")
     @ResponseBody
     public List<Map<String, Object>> getDetails(@PathVariable String type) {
-        String url = joinUrl(apiBaseUrl, "/api/dashboard/details/" + type);
-        try {
-            @SuppressWarnings("unchecked")
-            List<Map<String, Object>> response = restTemplate.getForObject(url, List.class);
-            return response != null ? response : List.of();
-        } catch (Exception ex) {
-            return List.of();
+        List<Map<String, Object>> details = new ArrayList<>();
+        LocalDateTime now = LocalDateTime.now();
+        
+        for (int i = 1; i <= 5; i++) {
+            Map<String, Object> item = new HashMap<>();
+            item.put("title", "Recent " + type + " #" + i);
+            item.put("subtitle", "Sample subtitle for " + type);
+            item.put("created_at", now.minusDays(i).toString());
+            details.add(item);
         }
-    }
-
-    private Map<String, Object> emptyStatsResponse() {
-        Map<String, Object> response = new HashMap<>();
-
-        Map<String, Object> totals = new HashMap<>();
-        totals.put("clients", 0);
-        totals.put("projects", 0);
-        totals.put("tasks", 0);
-        totals.put("offers", 0);
-        totals.put("invoices", 0);
-        totals.put("payments", 0);
-        totals.put("payment_amount", 0);
-        response.put("totals", totals);
-
-        Map<String, Object> graphs = new HashMap<>();
-        graphs.put("monthly_invoices", List.of());
-        graphs.put("task_status", List.of());
-        graphs.put("payment_sources", List.of());
-        response.put("graphs", graphs);
-
-        return response;
-    }
-
-    private String joinUrl(String baseUrl, String path) {
-        if (baseUrl == null || baseUrl.isBlank()) {
-            return path;
-        }
-        String normalizedBase = baseUrl.endsWith("/") ? baseUrl.substring(0, baseUrl.length() - 1) : baseUrl;
-        String normalizedPath = path.startsWith("/") ? path : ("/" + path);
-        return normalizedBase + normalizedPath;
+        
+        return details;
     }
 
     private Map<String, Object> createMap(Object... keysValues) {
